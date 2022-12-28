@@ -1,0 +1,17 @@
+{
+  "name": "LunchMc",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/client/app.js",
+  "scripts": {
+    "launch": "node src/launch/launch.js",
+    "electron": "electron ."
+  },
+  "devDependencies": {
+    "@xmcl/core": "^2.10.1",
+    "@xmcl/installer": "^4.4.0",
+    "electron": "^22.0.0",
+    "minecraft-launcher-core": "^3.16.17",
+    "vue": "^3.2.45"
+  }
+}
