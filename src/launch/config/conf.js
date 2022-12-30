@@ -1,5 +1,3 @@
-const { Client, Authenticator } = require("minecraft-launcher-core");
-const path = require("path");
 const params = require("./params.js");
 var loc = params.loc;
 var vs = params.version;
@@ -24,7 +22,6 @@ class opts {
     this.memory = memory || { max: "6G", min: "4G" };
     this.root = root || loc;
     this.Window = Window || { height: 1024, width: 720 };
-    this.authorization = authorization || Authenticator.getAuth("username");
   }
 }
 (module.exports = opts), vs;

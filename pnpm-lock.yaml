@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@xmcl/core': ^2.10.1
   '@xmcl/installer': ^4.4.0
+  '@xmcl/user': ^2.1.8
   electron: ^22.0.0
   minecraft-launcher-core: ^3.16.17
   vue: ^3.2.45
@@ -10,6 +11,7 @@ specifiers:
 devDependencies:
   '@xmcl/core': 2.10.1
   '@xmcl/installer': 4.4.0
+  '@xmcl/user': 2.1.8
   electron: 22.0.0
   minecraft-launcher-core: 3.16.17
   vue: 3.2.45
@@ -242,6 +244,14 @@ packages:
       yauzl: ^2.10.0
     dependencies:
       yauzl: 2.10.0
+    dev: true
+
+  /@xmcl/user/2.1.8:
+    resolution: {integrity: sha512-L2lIqi7x8naRRhOkTtyZPt5CueYBWjckfQOuvMMOf2yALUQ4d00H+9odDCniDsml+fv15Hx8pJccLg9svtW4pQ==}
+    engines: {node: '>=10.0'}
+    dependencies:
+      form-data: 3.0.1
+      uuid: 8.3.2
     dev: true
 
   /adm-zip/0.4.16:
@@ -486,6 +496,15 @@ packages:
   /form-data/2.3.3:
     resolution: {integrity: sha512-1lLKB2Mu3aGP1Q/2eCOx0fNbRMe7XdwktwOruhfqqd0rIJWwN4Dh+E3hrPSlDCXnSR7UtZ1N38rVXm+6+MEhJQ==}
     engines: {node: '>= 0.12'}
+    dependencies:
+      asynckit: 0.4.0
+      combined-stream: 1.0.8
+      mime-types: 2.1.35
+    dev: true
+
+  /form-data/3.0.1:
+    resolution: {integrity: sha512-RHkBKtLWUVwd7SqRIvCZMEvAMoGUp0XU+seQiZejj0COz3RI3hWP4sCv3gZWWLjJTd7rGwcsF5eKZGii0r/hbg==}
+    engines: {node: '>= 6'}
     dependencies:
       asynckit: 0.4.0
       combined-stream: 1.0.8
