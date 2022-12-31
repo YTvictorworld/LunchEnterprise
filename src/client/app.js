@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 const { login, offline, Authentication } = require("@xmcl/user");
 const path = require("path");
+
 //const
 var mainwindows;
 const createWindow = () => {
@@ -8,6 +9,7 @@ const createWindow = () => {
     with: 1024,
     height: 640,
     autoHideMenuBar: true,
+    titleBarStyle: "hidden",
     webPreferences: {
       preload: path.join(__dirname, "backend", "preload.js"),
       nodeIntegration: true,
@@ -58,6 +60,22 @@ try {
 } catch (error) {
   console.log(error);
 }
+
+ipcMain.on("exit", () => {
+  app.quit();
+});
+
+ipcMain.on("minimize", () => {
+  mainwindows.minimize();
+});
+
+ipcMain.on("maximize", () => {
+  if (mainwindows.isMaximized()) {
+    mainwindows.restore();
+  } else {
+    mainwindows.maximize();
+  }
+});
 
 /* [NOTES] */
 

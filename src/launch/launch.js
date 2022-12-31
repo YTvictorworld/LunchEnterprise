@@ -1,6 +1,6 @@
 const fs = require("fs");
 const req = require("./assets/check.js");
-
+const { Authenticator } = require("minecraft-launcher-core");
 //variables
 const opts = require("./config/conf.js");
 let OptsClass = new opts(
@@ -8,7 +8,8 @@ let OptsClass = new opts(
   this.version,
   this.root,
   this.memory,
-  this.window
+  this.window,
+  Authenticator.getAuth("username")
 );
 
 const { Client } = require("minecraft-launcher-core");
