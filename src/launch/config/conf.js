@@ -2,6 +2,8 @@ const params = require("./params.js");
 var loc = params.loc;
 var vs = params.version;
 
+// recommend to have the class name like "Opt", first letter upper case for better readability
+// Ok
 class opts {
   /**
    * @arg {object} Window - The window options to launch.
@@ -22,6 +24,7 @@ class opts {
     this.memory = memory || { max: "6G", min: "4G" };
     this.root = root || loc;
     this.Window = Window || { height: 1024, width: 720 };
+    this.authorization = authorization;
   }
 }
 (module.exports = opts), vs;

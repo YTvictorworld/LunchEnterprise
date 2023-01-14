@@ -1,0 +1,159 @@
+@import url("https://fonts.cdnfonts.com/css/minecraft-4");
+
+/*.menuGamebar {
+  position: absolute;
+  margin-top: 450px;
+  margin-left: 50vh;
+}
+*/
+
+/*.container-body {
+  display: none;
+}*/
+
+footer {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  padding-bottom: 30px;
+  text-align: center;
+}
+.btn-play p {
+  margin: 0;
+  padding: 0;
+  font-size: 15px;
+  margin-top: -10px;
+  margin-bottom: -5px;
+}
+
+.btn-play {
+  text-shadow: 2px 4px #000;
+}
+
+.btn-play {
+  padding: 15px 25px;
+  font-size: 24px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #0070ff;
+  border: none;
+  box-shadow: 0 9px #002656;
+  width: 200px;
+  font-family: "Minecraft", sans-serif;
+}
+
+.btn-play:hover {
+  background-color: #0157c4;
+}
+
+.btn-play:active {
+  background-color: #04418e;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+.btn-settings {
+  padding: 15px 25px;
+  font-size: 24px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #0070ff;
+  border: none;
+  box-shadow: 0 9px #002656;
+  width: 50px;
+  height: 50px;
+  font-family: "Minecraft", sans-serif;
+}
+
+#settingsIcon {
+  position: absolute;
+  margin-top: -25px;
+  margin-left: -24px;
+  height: 50px;
+}
+
+.btn-settings:hover {
+  background-color: #0157c4;
+}
+
+.btn-settings:active {
+  background-color: #04418e;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+.btn-about {
+  padding: 15px 25px;
+  font-size: 24px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+  background-color: #0070ff;
+  border: none;
+  box-shadow: 0 9px #002656;
+  width: 50px;
+  height: 50px;
+  font-family: "Minecraft", sans-serif;
+}
+
+#aboutIcon {
+  position: absolute;
+  margin-top: -25px;
+  margin-left: -24px;
+  height: 50px;
+}
+
+.btn-about:hover {
+  background-color: #0157c4;
+}
+
+.btn-about:active {
+  background-color: #04418e;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+.loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  background: #191919;
+  position: fixed;
+  transition: all 0.5s ease;
+  z-index: 1;
+}
+
+.loader .ring {
+  position: relative;
+  height: 45px;
+  width: 45px;
+  border: 2px solid #ddd;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.loader .ring:after {
+  position: absolute;
+  content: "";
+  height: 100%;
+  width: 100%;
+  border: 5px solid grey;
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: rotate 1.5s linear infinite;
+}
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
