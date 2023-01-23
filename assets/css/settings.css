@@ -1,0 +1,123 @@
+.main1 {
+  margin: 0 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  flex-direction: column;
+  height: auto;
+  padding: 0 15px;
+  padding-bottom: 15px;
+  width: auto;
+  background-color: #c6c6c6;
+  box-shadow: 8px 0 0 0 #555555, 0 8px 0 0 #555555, 4px 4px 0 0 #555555,
+    -8px 0 0 0 #e8e8e8, 0 -8px 0 0 #e8e8e8, -4px -4px 0 0 #e8e8e8,
+    0 0 0 4px #b5b4b5, 4px 8px 0 0 #555, 8px 4px 0 0 #555, -4px -8px 0 0 #e8e8e8,
+    -8px -4px 0 0 #e8e8e8, 8px -4px 0 0 #000, 4px -8px 0 0 #000,
+    -8px 4px 0 0 #000, -4px 8px 0 0 #000, -8px -8px 0 0 #000, 8px 8px 0 0 #000,
+    -12px 0 0 0 #000, -12px -4px 0 0 #000, 12px 0 0 0 #000, 12px 4px 0 0 #000,
+    0 -12px 0 0 #000, -4px -12px 0 0 #000, 0 12px 0 0 #000, 4px 12px 0 0 #000;
+}
+
+.box {
+  height: var(--slot-size);
+  width: var(--slot-size);
+  background-color: #919191;
+  box-shadow: 2px 2px 0 2px #e8e8e8, -2px -2px 0 2px #555, 0 0 0 4px #8b8b8b;
+}
+
+h1 {
+  font-family: "MinecraftiaRegular";
+  font-weight: normal;
+  font-style: normal;
+  color: #555;
+  display: inline-block;
+  width: 100%;
+  font-size: 1.2em;
+  line-height: 30px;
+  margin-top: 0;
+}
+
+/* box-shadow: none|h-offset v-offset blur spread color |inset|initial|inherit; */
+
+@media (max-width: 600px) {
+  .main1,
+  .test {
+    padding: 0 8px;
+    padding-bottom: 8px;
+
+    box-shadow: 4px 0 0 0 #555555, 0 4px 0 0 #555555, 2px 2px 0 0 #555555,
+      -4px 0 0 0 #e8e8e8, 0 -4px 0 0 #e8e8e8, -2px -2px 0 0 #e8e8e8,
+      0 0 0 2px #b5b4b5, 2px 4px 0 0 #555, 4px 2px 0 0 #555,
+      -2px -4px 0 0 #e8e8e8, -4px -2px 0 0 #e8e8e8, 4px -2px 0 0 #000,
+      2px -4px 0 0 #000, -4px 2px 0 0 #000, -2px 4px 0 0 #000,
+      -4px -4px 0 0 #000, 4px 4px 0 0 #000, -6px 0 0 0 #000, -6px -2px 0 0 #000,
+      6px 0 0 0 #000, 6px 2px 0 0 #000, 0 -6px 0 0 #000, -2px -6px 0 0 #000,
+      0 6px 0 0 #000, 2px 6px 0 0 #000;
+  }
+
+  h1 {
+    font-size: 1rem;
+  }
+}
+
+.form {
+  width: 200px;
+}
+
+#memoryChip {
+  margin: 6px 55px;
+  font-family: "MinecraftiaRegular";
+}
+
+.advanced-opts {
+  padding: 15px 25px;
+  font-size: 24px !important;
+  text-align: center !important;
+  outline: none !important;
+  color: #fff !important;
+  background-color: #c6c6c6 !important;
+  box-shadow: 8px 0 0 0 #555555, 0 8px 0 0 #555555, 4px 4px 0 0 #555555,
+    -8px 0 0 0 #e8e8e8, 0 -8px 0 0 #e8e8e8, -4px -4px 0 0 #e8e8e8,
+    0 0 0 4px #b5b4b5, 4px 8px 0 0 #555, 8px 4px 0 0 #555, -4px -8px 0 0 #e8e8e8,
+    -8px -4px 0 0 #e8e8e8, 8px -4px 0 0 #000, 4px -8px 0 0 #000,
+    -8px 4px 0 0 #000, -4px 8px 0 0 #000, -8px -8px 0 0 #000, 8px 8px 0 0 #000,
+    -12px 0 0 0 #000, -12px -4px 0 0 #000, 12px 0 0 0 #000, 12px 4px 0 0 #000,
+    0 -12px 0 0 #000, -4px -12px 0 0 #000, 0 12px 0 0 #000, 4px 12px 0 0 #000 !important;
+  border: none !important;
+
+  height: 10px;
+  font-family: "Minecraft", sans-serif;
+  margin: 10px 12px;
+}
+
+.advanced-opts:hover {
+  background-color: #919191 !important;
+}
+
+.advanced-opts:active {
+  background-color: #565656;
+  transform: translateY(4px);
+}
+
+.Advanced-Card {
+  box-shadow: 8px 0 0 0 #555555, 0 8px 0 0 #555555, 4px 4px 0 0 #555555,
+    -8px 0 0 0 #e8e8e8, 0 -8px 0 0 #e8e8e8, -4px -4px 0 0 #e8e8e8,
+    0 0 0 4px #b5b4b5, 4px 8px 0 0 #555, 8px 4px 0 0 #555, -4px -8px 0 0 #e8e8e8,
+    -8px -4px 0 0 #e8e8e8, 8px -4px 0 0 #000, 4px -8px 0 0 #000,
+    -8px 4px 0 0 #000, -4px 8px 0 0 #000, -8px -8px 0 0 #000, 8px 8px 0 0 #000,
+    -12px 0 0 0 #000, -12px -4px 0 0 #000, 12px 0 0 0 #000, 12px 4px 0 0 #000,
+    0 -12px 0 0 #000, -4px -12px 0 0 #000, 0 12px 0 0 #000, 4px 12px 0 0 #000 !important;
+}
+
+.windowsSizeText {
+  font-family: "MinecraftiaRegular";
+  font-size: 1.2rem;
+  color: #555;
+  margin: 10px;
+}
+
+#DirectoryTextField {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}

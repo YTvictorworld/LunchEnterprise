@@ -3,7 +3,12 @@ const { login, offline, Authentication } = require("@xmcl/user");
 const path = require("path");
 const sqlite3 = require("sqlite3");
 const db = new sqlite3.Database("data.db");
-db.run("DELETE FROM DataUser");
+const {
+  VUEJS_DEVTOOLS,
+  default: install,
+} = require("electron-devtools-installer");
+
+/* db.run("DELETE FROM DataUser"); */
 //const
 /**
  * @type BrowserWindow
@@ -55,28 +60,26 @@ const createWindow = () => {
   });
   process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
   mainwindows.openDevTools();
+  mainwindows.loadURL("http://127.0.0.1:9000/");
   /*mainwindows.loadFile(
     path.join(__dirname, "../../../", "LunchMc-L", "index.html")
   );*/
   //mainwindows.loadURL("http://github.com");
 };
 app.whenReady().then(async () => {
+  install(VUEJS_DEVTOOLS).then(
+    (v) => {
+      console.log(`Installed vue devtool ${v}`);
+    },
+    (e) => {
+      console.error("Fail to install vue devtool");
+      console.error(e);
+    }
+  );
+
   createWindow();
-  db.all("SELECT * FROM DataUser", [], (err, rows) => {
-    if (err) {
-      throw err;
-    }
-    if (rows.length == 0) {
-      mainwindows.loadFile(
-        path.join(__dirname, "../../../", "LunchMc-L", "index.html")
-      );
-    } else {
-      mainwindows.loadFile(
-        path.join(__dirname, "../../../", "LaunchMc-HomePage", "index.html")
-      );
-    }
-  });
 });
+
 // maybe we can remove this
 // i think cuz this only get if there arent any windows open
 app.on("activate", () => {
@@ -89,48 +92,61 @@ app.on("window-all-closed", () => {
   }
 });
 
-let authOffline;
+// on
+// send('login')
 
-ipcMain.on("login", async (event, data) => {
+// higher level of on & send
+// you can read the doc
+// - handle (handle the message in server (main))
+// - invoke (send message from client to server)
+
+function executeSQLAll(statement) {
+  return new Promise((resolve, reject) => {
+    db.all(statement, [], (err, rows) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(rows);
+      }
+    });
+  });
+}
+
+ipcMain.handle("getConfig", async (event, data) => {
+  const result = await executeSQLAll("SELECT * FROM Config");
+  console.log(result);
+  if (result.length === 0) {
+    return null;
+  } else {
+    return JSON.parse(result[0].config);
+  }
+});
+
+ipcMain.handle("saveConfig", async (event, data) => {
+  //this have an error
+  console.log(data);
+  db.exec("CREATE TABLE IF NOT EXISTS Config (config TEXT)");
+  await executeSQLAll(
+    "INSERT INTO Config VALUES ('" + JSON.stringify(data) + "')"
+  );
+});
+//logout
+//make a button (logout) that delete the data that name = username
+ipcMain.handle("userCount", async (event, data) => {
+  const result = await executeSQLAll("SELECT COUNT(*) FROM DataUser");
+  return Number(result[0]["COUNT(*)"]);
+});
+// custom
+ipcMain.handle("login", async (event, data) => {
   db.exec("CREATE TABLE IF NOT EXISTS DataUser (username TEXT)");
   // db.run("DELETE FROM DataUser");
-  authOffline = offline(data);
 
-  db.all("SELECT * FROM DataUser", [], (err, rows) => {
-    if (err) {
-      throw err;
-    }
-
-    if (rows.length == 0) {
-      db.exec("INSERT INTO DataUser VALUES ('" + data + "')");
-      mainwindows.loadURL("http://127.0.0.1:9000/");
-    }
-  });
-
-  //db.exec("DROP TABLE DataUser");
-
-  /*db.get("SELECT * FROM DataUser WHERE username = ?", [data], (err, row) => {
-      if (err.message == "SQLITE_ERROR: no such table: DataUser") {
-        db.exec("CREATE TABLE DataUser (username TEXT)");
-        console.log("Table created");
-    }
-  });*/
-
-  /*
-   db.exec("CREATE TABLE DataUser (username TEXT)");
-   db.exec("INSERT INTO DataUser VALUES ('" + data + "')");
-   db.close();*/
-
-  // console.log("Data saved");
-
-  // db.exec("CREATE TABLE DataUser (username TEXT)");
-
-  /*let $ = db.all("SELECT * FROM DataUser", [], (err, rows) => {
-        if (err) {
-          throw err;
-        }
-        console.log(rows);
-      });*/
+  const rows = await executeSQLAll("SELECT COUNT(*) FROM DataUser");
+  const count = Number(rows[0]["COUNT(*)"]);
+  if (count === 0) {
+    db.exec("INSERT INTO DataUser VALUES ('" + data + "')");
+  }
+  return true;
 });
 
 ipcMain.on("exit", () => {
@@ -177,15 +193,7 @@ ipcMain.on("play", async () => {
 });
 
 ipcMain.on("settings", () => {
-  mainwindows.loadFile(
-    path.join(
-      __dirname,
-      "../../../",
-      "LaunchMc-HomePage",
-      "pages",
-      "settings.html"
-    )
-  );
+  console.log("settings");
 });
 
 ipcMain.on("profile", () => {

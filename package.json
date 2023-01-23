@@ -7,22 +7,23 @@
   "license": "MITT",
   "scripts": {
     "dev:renderer": "vite",
-    "launch": "node src/launch/launch.js",
-    "electron": "electron ."
+    "dev:main": "electron ."
   },
   "devDependencies": {
+    "@vitejs/plugin-vue": "^4.0.0",
     "@xmcl/core": "^2.10.1",
     "@xmcl/installer": "^4.4.0",
     "@xmcl/user": "^2.1.8",
     "electron": "^22.0.0",
     "minecraft-launcher-core": "^3.16.17",
     "vite": "^4.0.4",
-    "@vitejs/plugin-vue": "^4.0.0",
     "vue": "^3.2.45",
     "vuetify": "^3.0.6"
   },
   "dependencies": {
+    "electron-devtools-installer": "^3.2.0",
     "sqlite": "^4.1.2",
-    "sqlite3": "^5.1.4"
+    "sqlite3": "^5.1.4",
+    "vue-router": "v4"
   }
 }

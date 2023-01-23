@@ -1,56 +1,88 @@
-.v-application {
+body {
   margin: 0;
   padding: 0;
-  font-family: "Open Sans", sans-serif;
-  background: #333 !important;
-  color: #fff;
-  min-height: 100vh;
+  background: url(../../../assets/imgs/fondo.jpg) no-repeat center center fixed;
+  background-size: cover;
+  font-family: sans-serif;
+  height: 100vh;
+  width: 100%;
   position: relative;
-  /* overflow: hidden; */
-  /* background: url(../images/bg.jpg) no-repeat center center fixed; */
+  font-family: "Open Sans", sans-serif;
+  overflow: hidden;
 }
 
-html ::-webkit-scrollbar {
-  display: none;
+.login-box {
+  width: 320px;
+  height: 320px;
+  background-color: #d2d2d2;
+  box-shadow: 8px 0 0 0 #555555, 0 8px 0 0 #555555, 4px 4px 0 0 #555555,
+    -8px 0 0 0 #e8e8e8, 0 -8px 0 0 #e8e8e8, -4px -4px 0 0 #e8e8e8,
+    0 0 0 4px #b5b4b5, 4px 8px 0 0 #555, 8px 4px 0 0 #555, -4px -8px 0 0 #e8e8e8,
+    -8px -4px 0 0 #e8e8e8, 8px -4px 0 0 #000, 4px -8px 0 0 #000,
+    -8px 4px 0 0 #000, -4px 8px 0 0 #000, -8px -8px 0 0 #000, 8px 8px 0 0 #000,
+    -12px 0 0 0 #000, -12px -4px 0 0 #000, 12px 0 0 0 #000, 12px 4px 0 0 #000,
+    0 -12px 0 0 #000, -4px -12px 0 0 #000, 0 12px 0 0 #000, 4px 12px 0 0 #000;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  padding: 70px 30px;
 }
 
-::-webkit-scrollbar {
-  width: 8px;
+.login-box .avatar {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  position: absolute;
+  top: -50px;
+  left: calc(50% - 50px);
+}
+
+.login-box h1 {
+  margin: 0;
+  padding: 0 0 20px;
+  text-align: center;
+  font-size: 22px;
+  color: #000;
+}
+
+.login-box label {
+  margin: 0;
+  padding: 0;
+  font-weight: bold;
+  display: block;
+}
+
+#input {
+  width: 100%;
+  margin-top: 20px;
+}
+
+#input {
+  border: none;
+  outline: none;
+  height: 40px;
+  background: green;
+  color: #fff;
+  border-radius: 20px;
+  font-size: 18px;
+  font-family: "MinecraftiaRegular";
+}
+
+#input:hover {
   cursor: pointer;
-}
-/* 
-::-webkit-scrollbar-thumb {
-  width: 8px;
-  cursor: pointer;
-  background: rgba(155, 155, 155, 0.5);
-  transition: all 1s;
-  border-radius: 2px;
-} */
-/* 
-::-webkit-scrollbar-thumb:hover {
-  width: 8px;
-  background: rgba(192, 192, 192, 0.8);
-  transition: all 1s;
-} */
-
-.visible-scroll ::-webkit-scrollbar,
-.visible-scroll::-webkit-scrollbar {
-  display: unset;
+  background: #ffc107;
+  color: #000;
 }
 
-.invisible-scroll ::-webkit-scrollbar,
-.invisible-scroll::-webkit-scrollbar {
-  display: none;
+.warnigs {
+  color: red;
+  font-size: 12px;
+  font-weight: bold;
+  margin: 0;
+  padding: 0;
+  text-align: center;
 }
-
-/*#navbar {
-  -webkit-app-region: drag;
-  -webkit-user-select: none;
-}
-
-.menu-options {
-  -webkit-app-region: no-drag;
-}*/
 
 .carousel-div {
   width: 830px;
@@ -61,6 +93,7 @@ html ::-webkit-scrollbar {
   width: 50px;
   height: 50px;
 }
+
 .plbtn {
   width: 140px;
   height: 50px;
@@ -78,8 +111,12 @@ html ::-webkit-scrollbar {
   font-size: 15px;
 }
 
+.app {
+  margin: 10px;
+}
+
 .menu-options {
-  margin-top: 0px;
+  margin-top: 20px;
   margin-bottom: 13px;
 }
 
@@ -148,7 +185,8 @@ html ::-webkit-scrollbar {
   color: #ffffff;
   width: 40px;
   text-align: center;
-  -webkit-transition-duration: 0.4s; /* Safari */
+  -webkit-transition-duration: 0.4s;
+  /* Safari */
   transition-duration: 0.4s;
   text-decoration: none;
   overflow: hidden;
@@ -193,7 +231,8 @@ html ::-webkit-scrollbar {
   color: #ffffff;
   width: 40px;
   text-align: center;
-  -webkit-transition-duration: 0.4s; /* Safari */
+  -webkit-transition-duration: 0.4s;
+  /* Safari */
   transition-duration: 0.4s;
   text-decoration: none;
   overflow: hidden;
@@ -232,15 +271,7 @@ html ::-webkit-scrollbar {
   align-items: center;
   flex-wrap: wrap;
   padding: 0px 0 5px;
-  height: 50px;
-}
-
-#play {
-  font-size: 30px;
-  margin-bottom: -30px;
-  margin-top: -10px;
-}
-
-#version {
-  padding-bottom: 5px;
+  height: 69px;
+  margin: 0px 0 0px 0;
+  margin-top: -20px;
 }
