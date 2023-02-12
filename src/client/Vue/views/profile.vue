@@ -23,5 +23,5 @@
    
    <script setup>
    import { ref } from 'vue'
-   const drawer = ref(false)
+   const drawer = ref(false);
    </script>
