@@ -13,7 +13,7 @@
 
 footer {
   position: absolute;
-  bottom: 0;
+  bottom: 50px;
   width: 100%;
   padding-bottom: 30px;
   text-align: center;
@@ -138,46 +138,6 @@ footer {
   transform: translateY(4px);
 }
 
-.loader {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  width: 100%;
-  background: #191919;
-  position: fixed;
-  transition: all 0.5s ease;
-  z-index: 1;
-}
-
-.loader .ring {
-  position: relative;
-  height: 45px;
-  width: 45px;
-  border: 2px solid #ddd;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.loader .ring:after {
-  position: absolute;
-  content: "";
-  height: 100%;
-  width: 100%;
-  border: 5px solid grey;
-  border-radius: 50%;
-  border-top-color: transparent;
-  animation: rotate 1.5s linear infinite;
-}
-
-@keyframes rotate {
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 .fontMinecraft {
   font-family: "MinecraftiaRegular";
 }
@@ -187,4 +147,15 @@ footer {
   border-radius: 10px !important;
   padding-top: 20px;
   position: absolute;
+}
+
+#profileCard {
+  font-family: "MinecraftiaRegular";
+  box-shadow: 8px 0 0 0 #555555, 0 8px 0 0 #555555, 4px 4px 0 0 #555555,
+    -8px 0 0 0 #e8e8e8, 0 -8px 0 0 #e8e8e8, -4px -4px 0 0 #e8e8e8,
+    0 0 0 4px #b5b4b5, 4px 8px 0 0 #555, 8px 4px 0 0 #555, -4px -8px 0 0 #e8e8e8,
+    -8px -4px 0 0 #e8e8e8, 8px -4px 0 0 #000, 4px -8px 0 0 #000,
+    -8px 4px 0 0 #000, -4px 8px 0 0 #000, -8px -8px 0 0 #000, 8px 8px 0 0 #000,
+    -12px 0 0 0 #000, -12px -4px 0 0 #000, 12px 0 0 0 #000, 12px 4px 0 0 #000,
+    0 -12px 0 0 #000, -4px -12px 0 0 #000, 0 12px 0 0 #000, 4px 12px 0 0 #000;
 }

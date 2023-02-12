@@ -4,7 +4,7 @@
     </div> -->
     <div class="container-body">
         <div class="bodyPart">
-            <v-carousel id="carousel" cycle height="400" hide-delimiter-background show-arrows-on-hover>
+            <!--             <v-carousel id="carousel" cycle height="400" hide-delimiter-background show-arrows-on-hover>
                 <v-carousel-item v-for="(slide, i) in slides" :key="i">
                     <v-sheet :color="colors[i]" height="100%">
                         <v-row class="fill-height" align="center" justify="center">
@@ -12,15 +12,42 @@
                         </v-row>
                     </v-sheet>
                 </v-carousel-item>
-            </v-carousel>
+            </v-carousel>    
+ -->
+
+ <!--    <v-btn @click="getUsername">test</v-btn>  -->
+
+            <v-card>
+                    <v-navigation-drawer id="profileCard" theme="dark" v-model="drawer" temporary>
+                        <v-list-item prepend-avatar="https://randomuser.me/api/portraits/men/78.jpg" :title=userName
+                            style="top: 10px; padding: 5px; margin-bottom: 5px;"></v-list-item>
+                            <div class="pa-2" id="Logout-Button">
+                                <v-btn block @click="logout">
+                                    Logout
+                                </v-btn>
+                            </div>
+                        <v-divider></v-divider>
+                        <v-list density="compact" nav>
+                            <v-list-item prepend-icon="mdi-view-dashboard" title="Home" value="home"></v-list-item>
+                            <v-list-item prepend-icon="mdi-forum" title="About" value="about"></v-list-item>
+                        </v-list>
+                    </v-navigation-drawer>
+                    <v-main>
+
+                    </v-main>
+            </v-card>
+
         </div>
         <footer>
             <div class="menuGamebar">
                 <div class="buttons">
-                    <button class="btn-about" @click="loadProfile">
+
+
+                    <button class="btn-about" @click.stop="drawer = !drawer" @click="getUsername">
                         <img src="https://img.icons8.com/arcade/64/null/minecraft-main-character.png" alt="about"
                             id="aboutIcon" />
                     </button>
+
                     <button class="btn-play">
                         <p id="play">PLAY</p>
                         <p id="version"><br />release {{ version }}</p>
@@ -103,7 +130,7 @@
     </div>
 </template>
 
-<script setup>
+<script lang="ts" allowJs="true" setup>
 import { ref, computed, reactive } from "vue";
 import { useRouter } from 'vue-router'
 //const sqlite = require('sqlite3').verbose();
@@ -116,10 +143,7 @@ const os = require("os");
 
 const { push } = useRouter()
 
-const loadProfile = () => {
-    push('/profile')
-    //Back button will take you to /home
-};
+
 
 const colors = [
     "indigo",
@@ -133,7 +157,9 @@ const items = ["1.12.2", "1.8.8", "1.7.9", "1.12.2", "1.8.8", "1.7.9", "1.12.2",
 const ver = "";
 const MinM = "";
 const MaxM = "";
+const userN = "";
 
+const userName = ref(userN);
 const MinMemroy = ref(MinM);
 const MaxMemory = ref(MaxM);
 const version = ref(ver);
@@ -150,6 +176,7 @@ const onlyNumbers = (evt) => {
     }
 };
 const dialog = ref(false);
+const drawer = ref(false);
 const minecraftLoc = ref(
     path.join(os.homedir(), "AppData", "Roaming", ".minecraft")
 );
@@ -160,14 +187,13 @@ const config = reactive({
     MaxMemory: MaxMemory,
     minecraftLoc: minecraftLoc,
 });
-console.log(config)
 
 const saveConfig = async (boolean) => {
     if (boolean == false) {
         ipcRenderer.send("saveConfig", { ...config });
     } else {
         const result = await ipcRenderer.invoke('getConfig')
-        console.log(result)
+
         if (result == null) {
             return;
         } else {
@@ -180,9 +206,28 @@ const saveConfig = async (boolean) => {
     }
 };
 
+const getUsername = async () => {
+    const result = await ipcRenderer.invoke('getData')
+    return userName.value = result[0].username;
+}
+
+const logout = async () => {
+    await ipcRenderer.invoke('logout')
+    push('/')
+}
+
+
+
 //optimizar todo esto
 </script>
 
 <style scoped>
+.v-main {
+    background-color: #333;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
 
 </style>

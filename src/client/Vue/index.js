@@ -11,12 +11,12 @@ import * as directives from "vuetify/directives";
 import { createRouter, createWebHistory } from "vue-router";
 import loginView from "../Vue/views/loginView.vue";
 import homeView from "../Vue/views/homeView.vue";
-import profileView from "../vue/views/ProfileView.vue";
+import profileView from "../vue/views/profile.vue";
 
 const routes = [
   { path: "/", component: loginView },
   { path: "/home", component: homeView },
-  { path: "/profile", component: profileView },
+  { path: "/profile", component: profileView }, 
 ];
 
 const router = createRouter({

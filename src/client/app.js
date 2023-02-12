@@ -3,12 +3,12 @@ const { login, offline, Authentication } = require("@xmcl/user");
 const path = require("path");
 const sqlite3 = require("sqlite3");
 const db = new sqlite3.Database("data.db");
-const {
+/* const {
   VUEJS_DEVTOOLS,
   default: install,
-} = require("electron-devtools-installer");
+} = require("electron-devtools-installer"); */
 
-/* db.run("DELETE FROM DataUser"); */
+ //db.run("DELETE FROM DataUser"); 
 //const
 /**
  * @type BrowserWindow
@@ -60,14 +60,14 @@ const createWindow = () => {
   });
   process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
   mainwindows.openDevTools();
-  mainwindows.loadURL("http://127.0.0.1:9000/");
+  mainwindows.loadURL("http://localhost:9000/");
   /*mainwindows.loadFile(
     path.join(__dirname, "../../../", "LunchMc-L", "index.html")
   );*/
   //mainwindows.loadURL("http://github.com");
 };
 app.whenReady().then(async () => {
-  install(VUEJS_DEVTOOLS).then(
+ /*  install(VUEJS_DEVTOOLS).then(
     (v) => {
       console.log(`Installed vue devtool ${v}`);
     },
@@ -75,7 +75,7 @@ app.whenReady().then(async () => {
       console.error("Fail to install vue devtool");
       console.error(e);
     }
-  );
+  ); */
 
   createWindow();
 });
@@ -112,19 +112,33 @@ function executeSQLAll(statement) {
   });
 }
 
+ipcMain.handle("logout", async (event, data) => {
+  db.run("DELETE FROM DataUser");
+  return true;
+});
+
+ipcMain.handle("getData", async (event, data) => {
+  const res = await executeSQLAll("SELECT * FROM DataUser");
+  return res;
+})
+
 ipcMain.handle("getConfig", async (event, data) => {
+  db.exec("CREATE TABLE IF NOT EXISTS Config (config TEXT)");
   const result = await executeSQLAll("SELECT * FROM Config");
   console.log(result);
   if (result.length === 0) {
+    console.log("Olways Null");
     return null;
   } else {
+    console.log("getConfig");
+    console.log(JSON.parse(result[0].config));
     return JSON.parse(result[0].config);
   }
 });
 
 ipcMain.handle("saveConfig", async (event, data) => {
   //this have an error
-  console.log(data);
+  console.log(JSON.stringify(data));
   db.exec("CREATE TABLE IF NOT EXISTS Config (config TEXT)");
   await executeSQLAll(
     "INSERT INTO Config VALUES ('" + JSON.stringify(data) + "')"
@@ -136,7 +150,7 @@ ipcMain.handle("userCount", async (event, data) => {
   const result = await executeSQLAll("SELECT COUNT(*) FROM DataUser");
   return Number(result[0]["COUNT(*)"]);
 });
-// custom
+// custom getConfig
 ipcMain.handle("login", async (event, data) => {
   db.exec("CREATE TABLE IF NOT EXISTS DataUser (username TEXT)");
   // db.run("DELETE FROM DataUser");

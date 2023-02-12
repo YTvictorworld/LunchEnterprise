@@ -1,5 +1,5 @@
 <template>
-    <li><v-btn elevation="2" @click="ba">back</v-btn></li>
+    <v-btn @click="ba" class="btn-back" variant="outlined" icon="mdi-cached" color="orange"></v-btn>
 </template>
 
 <script setup>
@@ -11,5 +11,9 @@ const ba = () => {
 </script>
 
 <style>
-
+.btn-back {
+    position: absolute;
+    top: 60px;
+    right: 470px;
+}
 </style>
