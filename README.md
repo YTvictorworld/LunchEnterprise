@@ -1,7 +1,7 @@
 # LunchEnterprise
 
 <p align="center">
-  <a href="https://xmcl.app" target="_blank">
+  <a href="https://https://github.com/YTvictorworld" target="_blank">
     <img alt="logo" src="assets/imgs/Captura.png>
   </a>
 </p>
