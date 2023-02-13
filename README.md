@@ -1,2 +1,9 @@
 # LunchEnterprise
-<img alt="logo" src="assets/imgs/Captura.PNG>
+
+<p align="center">
+  <a href="https://xmcl.app" target="_blank">
+    <img alt="logo" src="assets/imgs/Captura.png>
+  </a>
+</p>
+
+
