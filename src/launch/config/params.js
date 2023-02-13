@@ -8,7 +8,7 @@ exports = {
     max: "6G",
     min: "4G",
   },
-  loc: path.join(process.cwd(), "../../../AppData/Roaming/.minecraft"),
+  loc: "\\.lunchmc",
 };
 
 //Se removio el username del auth del mismo modulo (minecraft-launcher-core)

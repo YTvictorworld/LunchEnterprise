@@ -15,7 +15,7 @@
             </v-carousel>    
  -->
 
- <!--    <v-btn @click="getUsername">test</v-btn>  -->
+<!--     <v-btn @click="test">test</v-btn>  -->
 
             <v-card>
                     <v-navigation-drawer id="profileCard" theme="dark" v-model="drawer" temporary>
@@ -48,7 +48,7 @@
                             id="aboutIcon" />
                     </button>
 
-                    <button class="btn-play">
+                    <button class="btn-play" @click="startGame">
                         <p id="play">PLAY</p>
                         <p id="version"><br />release {{ version }}</p>
                     </button>
@@ -72,7 +72,7 @@
                                         Memory
                                     </v-chip>
 
-                                    <v-text-field label="Min" placeholder="1000" v-model="MinMemroy"
+                                    <v-text-field label="Min" placeholder="1000" v-model="MinMemory"
                                         @keypress="onlyNumbers"></v-text-field>
                                     <v-text-field label="Max" placeholder="4000" v-model="MaxMemory"
                                         @keypress="onlyNumbers"></v-text-field>
@@ -101,7 +101,7 @@
                                         <v-card-text id="DirectoryTextField">
                                             <!-- Minecraft location input -->
                                             <v-text-field label="Directory"
-                                                placeholder="C:\Users\User\AppData\Roaming\.minecraft"></v-text-field>
+                                                placeholder="C:\Users\User\AppData\Roaming\.lunchmc"></v-text-field>
                                         </v-card-text>
                                         <v-form>
                                             <v-container>
@@ -110,11 +110,11 @@
                                                 <v-row>
                                                     <v-col cols="12" sm="6" md="4">
                                                         <v-text-field label="Height " placeholder="1024" outlined
-                                                            @keypress="onlyNumbers"></v-text-field>
+                                                            @keypress="onlyNumbers" v-model="wHeight"></v-text-field>
                                                     </v-col>
                                                     <v-col cols="12" sm="6" md="4">
                                                         <v-text-field label="Width" placeholder="720" outlined
-                                                            @keypress="onlyNumbers"></v-text-field>
+                                                            @keypress="onlyNumbers" v-model="wWidth"></v-text-field>
                                                     </v-col>
                                                 </v-row>
                                             </v-container>
@@ -153,16 +153,20 @@ const colors = [
     "deep-purple accent-4",
 ];
 const slds = ["First", "Second", "Third", "Fourth", "Fifth"];
-const items = ["1.12.2", "1.8.8", "1.7.9", "1.12.2", "1.8.8", "1.7.9", "1.12.2", "1.8.8", "1.7.9", "1.12.2", "1.8.8", "1.7.9"];
-const ver = "";
-const MinM = "";
+const items = ["1.12.2", "1.8.8", "1.7.9"];
+
 const MaxM = "";
 const userN = "";
+const height = "1024";
+const width = "720";
 
-const userName = ref(userN);
-const MinMemroy = ref(MinM);
-const MaxMemory = ref(MaxM);
-const version = ref(ver);
+//here is the problem
+const wHeight = ref('');
+const wWidth = ref('');
+const userName = ref('');
+const MinMemory = ref('');
+const MaxMemory = ref('');
+const version = ref('');
 const slides = ref(slds);
 
 const onlyNumbers = (evt) => {
@@ -178,33 +182,26 @@ const onlyNumbers = (evt) => {
 const dialog = ref(false);
 const drawer = ref(false);
 const minecraftLoc = ref(
-    path.join(os.homedir(), "AppData", "Roaming", ".minecraft")
+    path.join(os.homedir(), "AppData", "Roaming", ".lunchmc")
 );
-
 const config = reactive({
-    version: version,
-    MinMemory: MinMemroy,
-    MaxMemory: MaxMemory,
-    minecraftLoc: minecraftLoc,
+    version: version.value,
+    MinMemory: MinMemory.value,
+    MaxMemory: MaxMemory.value,
+    minecraftLoc: minecraftLoc.value,
+    wHeight: wHeight.value,
+    wWidth: wWidth.value,
 });
+
+console.log(config);
 
 const saveConfig = async (boolean) => {
     if (boolean == false) {
-        ipcRenderer.send("saveConfig", { ...config });
-    } else {
-        const result = await ipcRenderer.invoke('getConfig')
-
-        if (result == null) {
-            return;
-        } else {
-            version.value = result.version
-            MinMemroy.value = result.MinMemory
-            MaxMemory.value = result.MaxMemory
-            minecraftLoc.value = result.minecraftLoc
-        }
-
-    }
+        await ipcRenderer.invoke("saveConfig", { ...config });
+    }      
+        /* ipcRenderer.invoke("getConfig", { ...config }); */
 };
+
 
 const getUsername = async () => {
     const result = await ipcRenderer.invoke('getData')
@@ -217,7 +214,13 @@ const logout = async () => {
 }
 
 
+const startGame = async () => {
+    await ipcRenderer.invoke('play', { ...config })
+}
 
+const test = async () => {
+    await ipcRenderer.invoke('test')
+}
 //optimizar todo esto
 </script>
 

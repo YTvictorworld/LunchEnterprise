@@ -2,7 +2,9 @@ const { app, BrowserWindow, ipcMain, pushNotifications } = require("electron");
 const { login, offline, Authentication } = require("@xmcl/user");
 const path = require("path");
 const sqlite3 = require("sqlite3");
-const db = new sqlite3.Database("data.db");
+const db = new sqlite3.Database(path.join(__dirname, "db", "launcherDb.db"));
+const lunchmc = app.getPath("appData") + "./lunchmc";
+
 /* const {
   VUEJS_DEVTOOLS,
   default: install,
@@ -112,6 +114,19 @@ function executeSQLAll(statement) {
   });
 }
 
+
+ipcMain.handle('test' , async (event, data) => {
+  db.run('DELETE FROM Config')
+  const res = await executeSQLAll("SELECT * FROM Config");
+  console.log(res);
+})
+
+ipcMain.handle('updateConfig', async (event, data) => {
+  db.run('DELETE FROM Config')
+  db.run('INSERT INTO Config (version, MinMemroy, MaxMemory, minecraftLoc, wHeight, wWidth) VALUES (?, ?, ?, ?, ?, ?)', [data.version, data.MinMemroy, data.MaxMemory, data.minecraftLoc, data.wHeight, data.wWidth]);
+  return true;
+})
+
 ipcMain.handle("logout", async (event, data) => {
   db.run("DELETE FROM DataUser");
   return true;
@@ -123,30 +138,30 @@ ipcMain.handle("getData", async (event, data) => {
 })
 
 ipcMain.handle("getConfig", async (event, data) => {
-  db.exec("CREATE TABLE IF NOT EXISTS Config (config TEXT)");
+  db.exec("CREATE TABLE IF NOT EXISTS Config (version TEXT, MinMemroy TEXT, MaxMemory, minecraftLoc TEXT, wHeight TEXT, wWidth TEXT)");
   const result = await executeSQLAll("SELECT * FROM Config");
   console.log(result);
   if (result.length === 0) {
     console.log("Olways Null");
     return null;
   } else {
-    console.log("getConfig");
-    console.log(JSON.parse(result[0].config));
-    return JSON.parse(result[0].config);
+    console.log("Not Null");
+    return result[0];
   }
 });
 
 ipcMain.handle("saveConfig", async (event, data) => {
   //this have an error
-  console.log(JSON.stringify(data));
-  db.exec("CREATE TABLE IF NOT EXISTS Config (config TEXT)");
-  await executeSQLAll(
-    "INSERT INTO Config VALUES ('" + JSON.stringify(data) + "')"
-  );
+  db.exec("CREATE TABLE IF NOT EXISTS Config (version TEXT, MinMemroy TEXT, MaxMemory, minecraftLoc TEXT, wHeight TEXT, wWidth TEXT)");
+  console.log("saving config")
+   await db.exec(
+    "INSERT INTO Config VALUES ('" + data.version + "', '" + data.MinMemory + "', '" + data.MaxMemory + "', '" + data.minecraftLoc + "', '" + data.wHeight + "', '" + data.wWidth + "')"
+  ); 
 });
 //logout
 //make a button (logout) that delete the data that name = username
 ipcMain.handle("userCount", async (event, data) => {
+  db.exec("CREATE TABLE IF NOT EXISTS DataUser (username TEXT)");
   const result = await executeSQLAll("SELECT COUNT(*) FROM DataUser");
   return Number(result[0]["COUNT(*)"]);
 });
@@ -179,20 +194,20 @@ ipcMain.on("maximize", () => {
   }
 });
 
-ipcMain.on("play", async () => {
-  await db.all("SELECT * FROM DataUser", [], (err, rows) => {
-    if (err) return console.log(err);
-    const { Authenticator, Client } = require("minecraft-launcher-core");
+
+ipcMain.handle("play", async () => {
+  const result = await executeSQLAll("SELECT * FROM DataUser");
+  const appData = app.getPath("appData");
+  const { Authenticator, Client } = require("minecraft-launcher-core");
     const opts = require("../launch/config/conf.js");
     const launcher = new Client();
-    console.log(rows[0].username);
     let OptsClass = new opts(
       null,
       { number: "1.12.2", type: "release" },
       { max: "6G", min: "2G" },
-      "C:\\Users\\Victo\\AppData\\Roaming\\.minecraft",
+       `${lunchmc}` ,
       { height: 1024, width: 720 },
-      Authenticator.getAuth(rows[0].username)
+      Authenticator.getAuth(result[0].username)
     );
     console.log(OptsClass);
     launcher.launch(OptsClass);
@@ -202,17 +217,10 @@ ipcMain.on("play", async () => {
     launcher.on("close", (e) => console.log(e));
     launcher.on("progress", (e) => console.log(e));
     launcher.on("download-status", (e) => console.log(e));
-  });
+
   console.log("play");
 });
 
-ipcMain.on("settings", () => {
-  console.log("settings");
-});
-
-ipcMain.on("profile", () => {
-  console.log("profile");
-});
 
 // For Today
 /* Añadir la primera función de la homepage (PlayButton)
