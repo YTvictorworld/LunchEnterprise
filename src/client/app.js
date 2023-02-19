@@ -1,10 +1,11 @@
 const { app, BrowserWindow, ipcMain, pushNotifications } = require("electron");
 const { login, offline, Authentication } = require("@xmcl/user");
-const path = require("path");
+const { join } = require("path");
 const sqlite3 = require("sqlite3");
-const db = new sqlite3.Database(path.join(__dirname, "db", "launcherDb.db"));
-const lunchmc = app.getPath("appData") + "./lunchmc";
-
+const db = new sqlite3.Database(join(__dirname, "db", "launcherDb.db"));
+const lunchmc = join(app.getPath("appData"), ".lunchmc");
+const configPath = join(lunchmc, 'config.json');
+const { readFileSync, writeFileSync } = require("fs");
 /* const {
   VUEJS_DEVTOOLS,
   default: install,
@@ -55,7 +56,7 @@ const createWindow = () => {
     autoHideMenuBar: true,
     titleBarStyle: "hidden",
     webPreferences: {
-      preload: path.join(__dirname, "backend", "preload.js"),
+      preload: join(__dirname, "backend", "preload.js"),
       nodeIntegration: true,
       contextIsolation: false,
     },
@@ -114,18 +115,42 @@ function executeSQLAll(statement) {
   });
 }
 
+function configEx() { 
+  try {
+    const file = readFileSync(configPath, "utf-8");
+    return JSON.parse(file);
+  } catch (error) {
+      if(error.code === 'ENOENT') {
+        const conf = {  
+          wHeight: '1024',
+          wWidth: '720',
+          MinMemory: '1000',
+          MaxMemory: '4000',
+          version: '1.12.2',
+          }
+          return conf;
+        }
+  }
+}
+
+function convertMBtoGB(mb) {
+  return Number(mb) / 1000;
+}
+
 
 ipcMain.handle('test' , async (event, data) => {
-  db.run('DELETE FROM Config')
+  /* await db.exec(`CREATE TABLE IF NOT EXISTS Config (version TEXT, MinMemroy TEXT, MaxMemory TEXT, minecraftLoc TEXT, wHeight TEXT, wWidth TEXT)`);
+  await db.run('INSERT INTO Config (version, MinMemroy, MaxMemory, minecraftLoc, wHeight, wWidth) VALUES (?, ?, ?, ?, ?, ?)', ["1.12.2", "1000", "4000", `${lunchmc}`, "1024", "720"]);
+   */
   const res = await executeSQLAll("SELECT * FROM Config");
   console.log(res);
+  //const res = await executeSQLAll("SELECT * FROM Config");
+  console.log("test");  
+  /* db.run('DELETE FROM Config')
+  const res = await executeSQLAll("SELECT * FROM Config");
+  console.log(res); */
 })
 
-ipcMain.handle('updateConfig', async (event, data) => {
-  db.run('DELETE FROM Config')
-  db.run('INSERT INTO Config (version, MinMemroy, MaxMemory, minecraftLoc, wHeight, wWidth) VALUES (?, ?, ?, ?, ?, ?)', [data.version, data.MinMemroy, data.MaxMemory, data.minecraftLoc, data.wHeight, data.wWidth]);
-  return true;
-})
 
 ipcMain.handle("logout", async (event, data) => {
   db.run("DELETE FROM DataUser");
@@ -138,26 +163,15 @@ ipcMain.handle("getData", async (event, data) => {
 })
 
 ipcMain.handle("getConfig", async (event, data) => {
-  db.exec("CREATE TABLE IF NOT EXISTS Config (version TEXT, MinMemroy TEXT, MaxMemory, minecraftLoc TEXT, wHeight TEXT, wWidth TEXT)");
-  const result = await executeSQLAll("SELECT * FROM Config");
-  console.log(result);
-  if (result.length === 0) {
-    console.log("Olways Null");
-    return null;
-  } else {
-    console.log("Not Null");
-    return result[0];
-  }
+  return configEx();
 });
 
-ipcMain.handle("saveConfig", async (event, data) => {
-  //this have an error
-  db.exec("CREATE TABLE IF NOT EXISTS Config (version TEXT, MinMemroy TEXT, MaxMemory, minecraftLoc TEXT, wHeight TEXT, wWidth TEXT)");
-  console.log("saving config")
-   await db.exec(
-    "INSERT INTO Config VALUES ('" + data.version + "', '" + data.MinMemory + "', '" + data.MaxMemory + "', '" + data.minecraftLoc + "', '" + data.wHeight + "', '" + data.wWidth + "')"
-  ); 
-});
+ipcMain.handle('setConfig', async (event, data) => {
+  console.log('setConfig') 
+  writeFileSync(configPath, JSON.stringify(data));
+   console.log("loaded")
+  
+})
 //logout
 //make a button (logout) that delete the data that name = username
 ipcMain.handle("userCount", async (event, data) => {
@@ -197,16 +211,24 @@ ipcMain.on("maximize", () => {
 
 ipcMain.handle("play", async () => {
   const result = await executeSQLAll("SELECT * FROM DataUser");
-  const appData = app.getPath("appData");
   const { Authenticator, Client } = require("minecraft-launcher-core");
     const opts = require("../launch/config/conf.js");
+    const conf = configEx()
     const launcher = new Client();
     let OptsClass = new opts(
-      null,
-      { number: "1.12.2", type: "release" },
-      { max: "6G", min: "2G" },
+      { 
+        number: conf.version, 
+        type: "release" 
+      },
+
+      { 
+        max: `${convertMBtoGB(conf.MaxMemory)}G`, 
+        min: `${convertMBtoGB(conf.MinMemory)}G` 
+      },
        `${lunchmc}` ,
-      { height: 1024, width: 720 },
+      { 
+        height: Number(conf.wHeight), 
+        width: Number(conf.wWidth) },
       Authenticator.getAuth(result[0].username)
     );
     console.log(OptsClass);

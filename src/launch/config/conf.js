@@ -15,11 +15,9 @@ class opts {
    * @arg {object} version - The version options to launch.
    * @arg {string} [version.number] - The version number of the Minecraft version to launch.
    * @arg {string} [version.type] - The type of the Minecraft version to launch. Can be "release", "snapshot" or "old_alpha".
-   * @arg {boolean} ClientPackage - null
    * @arg {string} root - The path of the root directory of the Minecraft installation.
    */
-  constructor(ClientPackage, version, memory, root, Window, authorization) {
-    this.ClientPackage = ClientPackage;
+  constructor(version, memory, root, Window, authorization) {
     this.version = version || vs;
     this.memory = memory || { max: "6G", min: "4G" };
     this.root = root || loc;

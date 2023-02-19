@@ -1,0 +1,10 @@
+{ 
+  
+  "LaunchSettings": {
+        "wHeight": "720",
+        "wWidth": "1280", 
+        "MinMemory" : "1000",
+        "MaxMemory" : "4000",
+        "version" : "1.12.2"
+  } 
+}

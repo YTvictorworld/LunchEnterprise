@@ -52,7 +52,7 @@
                         <p id="play">PLAY</p>
                         <p id="version"><br />release {{ version }}</p>
                     </button>
-                    <v-menu :close-on-content-click="false" @update:modelValue="saveConfig" location="right"
+                    <v-menu :close-on-content-click="false" @update:modelValue="ConfData" location="right"
                         open-delay="0">
                         <template v-slot:activator="{ props }">
                             <button class="btn-settings" v-bind="props">
@@ -130,21 +130,27 @@
     </div>
 </template>
 
-<script lang="ts" allowJs="true" setup>
+<script allowJs="true" setup>
 import { ref, computed, reactive } from "vue";
 import { useRouter } from 'vue-router'
+
 //const sqlite = require('sqlite3').verbose();
 //console.log(db)
 //db.run('CREATE TABLE IF NOT EXISTS config (versionP TEXT)');
 const { ipcRenderer, pushNotifications } = require("electron");
 const path = require("path");
 const os = require("os");
+const fs = require('fs'); 
+
 // const { push } = require("vue-router");
 
 const { push } = useRouter()
 
-
-
+const wHeight = ref('');
+const wWidth = ref();
+const MinMemory = ref('');
+const MaxMemory = ref('');
+const version = ref('');
 const colors = [
     "indigo",
     "warning",
@@ -155,18 +161,15 @@ const colors = [
 const slds = ["First", "Second", "Third", "Fourth", "Fifth"];
 const items = ["1.12.2", "1.8.8", "1.7.9"];
 
-const MaxM = "";
+const MaxM = "4000";
+const MinM = "1000";
 const userN = "";
 const height = "1024";
 const width = "720";
+const userName = ref('');
 
 //here is the problem
-const wHeight = ref('');
-const wWidth = ref('');
-const userName = ref('');
-const MinMemory = ref('');
-const MaxMemory = ref('');
-const version = ref('');
+
 const slides = ref(slds);
 
 const onlyNumbers = (evt) => {
@@ -184,23 +187,29 @@ const drawer = ref(false);
 const minecraftLoc = ref(
     path.join(os.homedir(), "AppData", "Roaming", ".lunchmc")
 );
-const config = reactive({
-    version: version.value,
-    MinMemory: MinMemory.value,
-    MaxMemory: MaxMemory.value,
-    minecraftLoc: minecraftLoc.value,
-    wHeight: wHeight.value,
-    wWidth: wWidth.value,
-});
 
-console.log(config);
 
-const saveConfig = async (boolean) => {
-    if (boolean == false) {
-        await ipcRenderer.invoke("saveConfig", { ...config });
-    }      
-        /* ipcRenderer.invoke("getConfig", { ...config }); */
-};
+const ConfData = async (show) => {
+    if(show === true){
+    const config = await ipcRenderer.invoke('getConfig')
+    wHeight.value = config.wHeight;
+    wWidth.value = config.wWidth;
+    MinMemory.value = config.MinMemory;
+    MaxMemory.value = config.MaxMemory;
+    version.value  = config.version;
+    console.log("showing")    
+    } else {
+        console.log("saving")
+        const confi = {
+        wHeight: wHeight.value,
+        wWidth: wWidth.value,
+        MinMemory: MinMemory.value,
+        MaxMemory: MaxMemory.value,
+        version: version.value
+    }
+    await ipcRenderer.invoke('setConfig', confi)
+    }
+}
 
 
 const getUsername = async () => {
@@ -215,7 +224,7 @@ const logout = async () => {
 
 
 const startGame = async () => {
-    await ipcRenderer.invoke('play', { ...config })
+    await ipcRenderer.invoke('play')
 }
 
 const test = async () => {
