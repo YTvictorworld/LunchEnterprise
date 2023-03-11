@@ -1,11 +1,13 @@
 const { app, BrowserWindow, ipcMain, pushNotifications } = require("electron");
-const { login, offline, Authentication } = require("@xmcl/user");
+const { offline, lookupByName } = require("@xmcl/user");
 const { join } = require("path");
 const sqlite3 = require("sqlite3");
 const db = new sqlite3.Database(join(__dirname, "db", "launcherDb.db"));
 const lunchmc = join(app.getPath("appData"), ".lunchmc");
 const configPath = join(lunchmc, 'config.json');
 const { readFileSync, writeFileSync } = require("fs");
+
+
 /* const {
   VUEJS_DEVTOOLS,
   default: install,
@@ -23,36 +25,7 @@ const createWindow = () => {
     with: 1024,
     height: 640,
     minHeight: 640,
-    minWidth: 1024, // it depends your preference i think
-    // these are good?      yes, this value are decide by your html UI
-    // as long as your UI in such resolution looks good
-    //nice and the last thing with the button play and settings i need to get all values of settings and them start minecraft rigth?
-    // yes when you click launch, you need to grab all correct setting to launch
-    // what settings you want to have in settings window?
-    // version, username? I think some of them can be in main window
-    // and you don't need multiple electron window
-    // you can just use vue to route different page in single electron window
-
-    // express is a backend framework, vue is not like express
-    // vue can help you to render html which is front end
-
-    // the `concept` of route is similar though
-
-    // all of needed
-    // vue is like express? it can route
-
-    // Oh nice, mmm i gonna add to he main window the settings and put version, memory, javaPath / .minecraft path like opctional and in the other button i gonna add the profile settings like skin, username and them
-
-    /* OOh a bettter idea, i have a better idea but i don't know to implement it 
-                      Do you know how to add a little window on settings button?
-                      */
-
-    // what do you mean by a little window
-    //with html and css let me show you an example
-
-    // check discord
-
-    // so i need first start with the settings windows? cuz i gonna add a emergent window
+    minWidth: 1024,
     autoHideMenuBar: true,
     titleBarStyle: "hidden",
     webPreferences: {
@@ -64,10 +37,6 @@ const createWindow = () => {
   process.env.ELECTRON_DISABLE_SECURITY_WARNINGS = true;
   mainwindows.openDevTools();
   mainwindows.loadURL("http://localhost:9000/");
-  /*mainwindows.loadFile(
-    path.join(__dirname, "../../../", "LunchMc-L", "index.html")
-  );*/
-  //mainwindows.loadURL("http://github.com");
 };
 app.whenReady().then(async () => {
  /*  install(VUEJS_DEVTOOLS).then(
@@ -83,8 +52,6 @@ app.whenReady().then(async () => {
   createWindow();
 });
 
-// maybe we can remove this
-// i think cuz this only get if there arent any windows open
 app.on("activate", () => {
   if (BrowserWindow.getAllWindows().length === 0) createWindow();
 });
@@ -95,8 +62,6 @@ app.on("window-all-closed", () => {
   }
 });
 
-// on
-// send('login')
 
 // higher level of on & send
 // you can read the doc
@@ -167,23 +132,25 @@ ipcMain.handle("getConfig", async (event, data) => {
 });
 
 ipcMain.handle('setConfig', async (event, data) => {
-  console.log('setConfig') 
+
   writeFileSync(configPath, JSON.stringify(data));
-   console.log("loaded")
+
   
 })
-//logout
+
 //make a button (logout) that delete the data that name = username
 ipcMain.handle("userCount", async (event, data) => {
   db.exec("CREATE TABLE IF NOT EXISTS DataUser (username TEXT)");
   const result = await executeSQLAll("SELECT COUNT(*) FROM DataUser");
   return Number(result[0]["COUNT(*)"]);
 });
-// custom getConfig
+
 ipcMain.handle("login", async (event, data) => {
   db.exec("CREATE TABLE IF NOT EXISTS DataUser (username TEXT)");
-  // db.run("DELETE FROM DataUser");
+    
+  const authOffline = offline(data);
 
+  console.log(authOffline);
   const rows = await executeSQLAll("SELECT COUNT(*) FROM DataUser");
   const count = Number(rows[0]["COUNT(*)"]);
   if (count === 0) {
@@ -243,6 +210,10 @@ ipcMain.handle("play", async () => {
   console.log("play");
 });
 
+process.on("uncaughtException", (err) => {
+  console.log(err);
+});
+
 
 // For Today
 /* Añadir la primera función de la homepage (PlayButton)
@@ -272,3 +243,16 @@ ipcMain.handle("play", async () => {
 [EXTRAS]
 -Como adornar el launcher https://www.youtube.com/shorts/JpNuKLLysnU
 */
+
+
+// Obtiene la uuid del usuario y consigue el skin
+/* 
+const fetch = require("node-fetch");
+const getUUID = async (username) => {
+  const res = await fetch(`https://api.mojang.com/users/profiles/minecraft/${username}`);
+  const json = await res.json();
+  return json.id;
+}
+const uuid = await getUUID(data); */
+
+//https://crafatar.com Consigue el skin del usuario

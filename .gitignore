@@ -106,3 +106,8 @@ dist
 .vscode
 #sqlite file
 *.db
+#build folder
+build
+#dist folder
+dist
+pnpm-lock.yaml

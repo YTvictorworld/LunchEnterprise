@@ -19,7 +19,7 @@
 
             <v-card>
                     <v-navigation-drawer id="profileCard" theme="dark" v-model="drawer" temporary>
-                        <v-list-item prepend-avatar="https://randomuser.me/api/portraits/men/78.jpg" :title=userName
+                        <v-list-item prepend-avatar="https://crafatar.com/avatars/ed5e5443-2389-37cb-9261-831a1d525334" :title=userName
                             style="top: 10px; padding: 5px; margin-bottom: 5px;"></v-list-item>
                             <div class="pa-2" id="Logout-Button">
                                 <v-btn block @click="logout">
@@ -28,8 +28,11 @@
                             </div>
                         <v-divider></v-divider>
                         <v-list density="compact" nav>
-                            <v-list-item prepend-icon="mdi-view-dashboard" title="Home" value="home"></v-list-item>
-                            <v-list-item prepend-icon="mdi-forum" title="About" value="about"></v-list-item>
+                            <v-list-item prepend-icon="mdi-view-dashboard" value="home">
+                                <v-container grid-list-xs id="dSkinModel">
+                                    <v-img src="https://crafatar.com/renders/body/ed5e5443-2389-37cb-9261-831a1d525334"></v-img>
+                                </v-container>
+                            </v-list-item>
                         </v-list>
                     </v-navigation-drawer>
                     <v-main>
@@ -161,12 +164,7 @@ const colors = [
 const slds = ["First", "Second", "Third", "Fourth", "Fifth"];
 const items = ["1.12.2", "1.8.8", "1.7.9"];
 
-const MaxM = "4000";
-const MinM = "1000";
-const userN = "";
-const height = "1024";
-const width = "720";
-const userName = ref('');
+const userName = ref("");
 
 //here is the problem
 
@@ -230,6 +228,10 @@ const startGame = async () => {
 const test = async () => {
     await ipcRenderer.invoke('test')
 }
+
+
+
+
 //optimizar todo esto
 </script>
 
@@ -237,6 +239,13 @@ const test = async () => {
 .v-main {
     background-color: #333;
     height: 100vh;
+    margin: 0;
+    padding: 0;
+}
+
+#dSkinModel {
+    width: 100px;
+    height: 200px;
     margin: 0;
     padding: 0;
 }
