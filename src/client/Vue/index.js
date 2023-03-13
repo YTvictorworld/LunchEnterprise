@@ -14,9 +14,9 @@ import homeView from "../Vue/views/homeView.vue";
 import profileView from "../vue/views/profile.vue";
 
 const routes = [
-  { path: "/", component: loginView },
-  { path: "/home", component: homeView },
-  { path: "/profile", component: profileView }, 
+  { path: "/", component: loginView, name: "login" },
+  { path: "/home", component: homeView, name: "home" },
+  { path: "/profile", component: profileView, name: "profile" }, 
 ];
 
 const router = createRouter({

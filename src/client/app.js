@@ -1,18 +1,19 @@
 const { app, BrowserWindow, ipcMain, pushNotifications } = require("electron");
-const { offline, lookupByName } = require("@xmcl/user");
-const { join } = require("path");
-const sqlite3 = require("sqlite3");
-const db = new sqlite3.Database(join(__dirname, "db", "launcherDb.db"));
-const lunchmc = join(app.getPath("appData"), ".lunchmc");
-const configPath = join(lunchmc, 'config.json');
-const { readFileSync, writeFileSync } = require("fs");
+const { offline, lookupByName }         = require("@xmcl/user");
+const { join }                          = require("path");
+const sqlite3                           = require("sqlite3");
+const db                                = new sqlite3.Database(join(__dirname, "db", "launcherDb.db"));
+const lunchmc                           = join(app.getPath("appData"), ".lunchmc");
+const configPath                        = join(lunchmc, 'config.json');
+const { readFileSync, writeFileSync }   = require("fs");
+const discordRPC                        = require("./backend/discord-rpc.js");
 
 
-/* const {
+ const {
   VUEJS_DEVTOOLS,
   default: install,
-} = require("electron-devtools-installer"); */
-
+} = require("electron-devtools-installer"); 
+ 
  //db.run("DELETE FROM DataUser"); 
 //const
 /**
@@ -29,7 +30,6 @@ const createWindow = () => {
     autoHideMenuBar: true,
     titleBarStyle: "hidden",
     webPreferences: {
-      preload: join(__dirname, "backend", "preload.js"),
       nodeIntegration: true,
       contextIsolation: false,
     },
@@ -38,8 +38,9 @@ const createWindow = () => {
   mainwindows.openDevTools();
   mainwindows.loadURL("http://localhost:9000/");
 };
+
 app.whenReady().then(async () => {
- /*  install(VUEJS_DEVTOOLS).then(
+  install(VUEJS_DEVTOOLS).then(
     (v) => {
       console.log(`Installed vue devtool ${v}`);
     },
@@ -47,8 +48,8 @@ app.whenReady().then(async () => {
       console.error("Fail to install vue devtool");
       console.error(e);
     }
-  ); */
-
+  );  
+  discordRPC('In Main Menu', 'Idle');
   createWindow();
 });
 
@@ -116,6 +117,9 @@ ipcMain.handle('test' , async (event, data) => {
   console.log(res); */
 })
 
+ipcMain.handle("richPresence", async (event, data) => {
+  console.log(data);
+})
 
 ipcMain.handle("logout", async (event, data) => {
   db.run("DELETE FROM DataUser");
